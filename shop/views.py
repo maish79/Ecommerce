@@ -191,3 +191,16 @@ def increase_quantity(request, slug):
         messages.info(request, "No such item in your cart")
 
     return redirect('shop:order-summary')
+
+
+def search(request):
+    products = Item.objects.all()
+
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        if keyword:
+            products = products.filter(Q(description__icontains=keyword)|Q(title__icontains=keyword))
+    context = {
+        'products': products,
+    }
+    return render(request, 'search.html', context)
