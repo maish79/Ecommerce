@@ -204,3 +204,51 @@ def search(request):
         'products': products,
     }
     return render(request, 'search.html', context)
+
+
+class CheckOutView( LoginRequiredMixin,  View):
+    '''
+    Checkout page
+    1. Save shipping address and related information
+    '''
+    def get(self, *args, **kwargs):
+        form = CheckOutForm()
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {'form': form, 'order':order}
+            return render(self.request, 'checkout-page.html', context)
+        except ObjectDoesNotExist:
+            return redirect('/')
+
+
+    def post(self, *args, **kwargs):
+        form = CheckOutForm(self.request.POST or None)
+        try:
+            order = Order.objects.get(user= self.request.user, ordered = False)
+
+            if form.is_valid():
+                # Get the shipping information and save them into the database.
+                street_address = form.cleaned_data.get('street_address')
+                apartment_address = form.cleaned_data.get('apartment_address')
+                country = form.cleaned_data.get('country')
+                zip = form.cleaned_data.get('zip')
+                same_shipping_address = form.cleaned_data.get('same_shipping_address')
+                save_info = form.cleaned_data.get('save_info')
+                payment_option = form.cleaned_data.get('payment_option')
+                billingAddress = BillingAddress(
+                    user=self.request.user,
+                    street_address=street_address,
+                    apartment_address=apartment_address,
+                    country=country,
+                    zip=zip,
+                )
+                billingAddress.save()
+                # Connect address with order (Foreign Key)
+                order.billing_address = billingAddress
+                order.save()
+                return redirect('shop:payment', payment_option= payment_option)
+            return render(self.request, 'checkout-page.html', {'form':form})
+
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You don't have any active order")
+            return redirect('shop:order-summary')
