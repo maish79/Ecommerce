@@ -116,3 +116,22 @@ def delete_from_cart(request, order_item_id):
     order_item.delete()
     messages.success(request, "Item has been removed from your cart.")
     return redirect('shop:home')
+
+
+@login_required
+def remove_from_cart(request, slug):
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        order_item = order.items.filter(item__slug=slug)
+        # Delete item from the cart
+        if order_item.exists():
+            order.items.remove(order_item[0])
+            messages.info(request, "Item successfully removed from your cart")
+        else:
+            messages.info(request, "No such item in your cart")
+    else:
+        messages.info(request, "No such item in your cart")
+
+    return redirect('shop:product', slug=slug)
