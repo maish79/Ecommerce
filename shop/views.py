@@ -2,14 +2,20 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.views import View
-from .forms import CheckOutForm, ReviewForm
-from .stripe_payment import stripe_payment
+from django.views.generic import ListView, DetailView
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from .forms import CheckOutForm, ReviewForm
 from .models import *
+from .stripe_payment import stripe_payment
+import stripe
+from django.db.models import Q
 # Create your views here.
 
 
@@ -51,3 +57,25 @@ def category(request, slug):
     }
 
     return render(request, 'category.html', context)
+
+
+
+class OrderSummaryView(LoginRequiredMixin, View):
+    '''
+    Renders order-summary page
+    '''
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            return render(self.request, 'order-summary.html', {'object': order})
+        except ObjectDoesNotExist:
+            return redirect('/')
+
+from django.views.decorators.http import require_POST
+
+@require_POST
+def delete_from_cart(request, order_item_id):
+    order_item = OrderItem.objects.get(id=order_item_id)
+    order_item.delete()
+    messages.success(request, "Item has been removed from your cart.")
+    return redirect('shop:home')
