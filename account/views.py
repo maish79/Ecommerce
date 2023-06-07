@@ -4,6 +4,12 @@ from django.shortcuts import redirect, render
 from django.urls.base import reverse_lazy
 from .models import User
 from shop.models import *
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+# from .forms import ProfileForm
+# from .mixins import FieldsMixin, FormValidMixin, AuthorAccessMixin, SuperUserAccessMixin
 
 
 def login(request):
@@ -52,3 +58,12 @@ def logout(request):
         messages.success(request, 'You! successfully Logged out')
         return redirect('account:login')
     return redirect('account:login')
+
+
+class ProductList(LoginRequiredMixin, ListView):
+    template_name = 'account/dashboard.html'
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Item.objects.all()
+        else:
+            return Item.objects.filter(uploader=self.request.user)

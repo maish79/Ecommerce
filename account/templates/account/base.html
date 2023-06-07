@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ecommerce</title>
+    <link href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css" rel="stylesheet" />
+    <link id="sleek-css" rel="stylesheet" href="{% static 'account/assets/css/sleek.css' %}" />
+  
+  
+  </head>
+
+  <body class="header-fixed sidebar-fixed sidebar-dark header-light" id="body">
+   
+
+    <div id="toaster"></div>
+
+        <aside class="left-sidebar bg-sidebar">
+          <div id="sidebar" class="sidebar sidebar-with-footer">
+            <div class="app-brand">
+              <a href="{% url 'account:home' %}">
+                <svg
+                  class="brand-icon"
+                
+                  preserveAspectRatio="xMidYMid"
+                  width="30"
+                  height="33"
+                  viewBox="0 0 30 33">
+                  <g fill="none" fill-rule="evenodd">
+                    <path class="logo-fill-blue" fill="#7DBCFF" d="M0 4v25l8 4V0zM22 4v25l8 4V0z" />
+                    <path class="logo-fill-white" fill="#FFF" d="M11 4v25l8 4V0z" />
+                  </g>
+                </svg>
+
+                <span class="brand-name text-truncate">E-Commerce</span>
+              </a>
+            </div>
+
+            <div class="" data-simplebar style="height: 100%;">
+              <ul class="nav sidebar-inner" id="sidebar-menu">
+                <li class="has-sub active expand">
+                  <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#dashboard"
+                    aria-expanded="false" aria-controls="dashboard">
+                    <i class="mdi mdi-view-dashboard-outline"></i>
+                    <span class="nav-text">Dashboard</span> <b class="caret"></b>
+                  </a>
+
+                  <ul class="collapse show" id="dashboard" data-parent="#sidebar-menu">
+                    <div class="sub-menu">
+                      <li class="active">
+                        <a class="sidenav-item-link" href="{% url 'account:home' %}">
+                          <span class="nav-text">Products</span>
+                        </a>
+                      </li>
+                      <li class="active">
+                        <a class="sidenav-item-link" href="{% url 'account:profile' %}">
+                          <span class="nav-text">Profile</span>
+                        </a>
+                      </li>
+                      <li class="active">
+                        <a class="sidenav-item-link" href="{% url 'account:product-create' %}">
+                          <span class="nav-text">Add Product</span>
+                        </a>
+                      </li>
+                    
+                      <li class="">
+                        <a href="javascript:{document.getElementById('logout').submit()}" >Logout</a>
+                        <form action="{% url 'account:logout' %}" id='logout' method="POST"> 
+                            {% csrf_token %}
+                            <input type="hidden">
+                        </form>
+                        
+                      </a>
+                    </li>
+                    
+                    </div>
+                  </ul>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </aside>
+
+
+        <div class="page-wrapper">
+          <header class="main-header " id="header">
+            <nav class="navbar navbar-static-top navbar-expand-lg">
+              <button id="sidebar-toggler" class="sidebar-toggle">
+                <span class="sr-only"></span>
+              </button>
+              <div class="search-form d-none d-lg-inline-block">
+               <a href="{% url 'shop:home' %}">Main Page</a>
+              </div>
+            </nav>
+          </header>
+          <div class="content-wrapper">
+            <div class="content">	
+		<div class="row">
+			<div class="col-xl-8 col-md-12">          
+			</div>
+		</div>
+		{% block main %}
+
+        {% endblock %}
+      </div> 
+    </div> 
+
+    </div> 
+  </div>
+    <script src="{% static 'account/assets/js/sleek.js' %}"></script>
+</body>
+</html>
