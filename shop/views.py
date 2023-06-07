@@ -79,3 +79,31 @@ def delete_from_cart(request, order_item_id):
     order_item.delete()
     messages.success(request, "Item has been removed from your cart.")
     return redirect('shop:home')
+
+
+
+@login_required
+def add_to_cart(request, slug):
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        # Find the OrderItem and update the quantity
+        order_item = order.items.filter(item__slug=slug)
+        if order_item.exists():
+            quant = order_item[0].quantity
+            messages.info(request, "This item is already in your cart.")
+        else:
+            order_item = OrderItem.objects.create(item=item)
+            order.items.add(order_item)
+            messages.info(request, "This item has been added to your cart")
+    else:
+        # Create new order
+        ordered_date = timezone.now()
+        order_item = OrderItem.objects.create(item=item)
+        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        order.items.add(order_item)
+        messages.info(request, "This item has been added to your cart")
+    return redirect('shop:product', slug=slug)
+
+
