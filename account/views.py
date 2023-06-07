@@ -6,9 +6,7 @@ from .models import User
 from shop.models import *
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
-# from .forms import ProfileForm
+from .forms import ProfileForm
 # from .mixins import FieldsMixin, FormValidMixin, AuthorAccessMixin, SuperUserAccessMixin
 
 
@@ -67,3 +65,19 @@ class ProductList(LoginRequiredMixin, ListView):
             return Item.objects.all()
         else:
             return Item.objects.filter(uploader=self.request.user)
+        
+
+class Profile(UpdateView):
+    model = User
+    template_name = 'account/profile.html'
+    form_class = ProfileForm
+    success_url = reverse_lazy('account:profile')
+    def get_object(self):
+        return User.objects.get(pk = self.request.user.pk)
+
+    def get_form_kwargs(self):
+        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs.update({
+            'user': self.request.user
+        })
+        return kwargs
