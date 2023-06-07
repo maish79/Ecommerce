@@ -135,3 +135,59 @@ def remove_from_cart(request, slug):
         messages.info(request, "No such item in your cart")
 
     return redirect('shop:product', slug=slug)
+
+
+
+@login_required
+def decrease_quantity(request, slug):
+    '''
+    Decrease slug-item from the cart by one unit.
+    :param request: POST request
+    :param slug: Unique slug of the item
+    :return: Rendered page
+    '''
+    #Get the Item and its Order
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        order_item = order.items.filter(item__slug=slug)
+        if order_item.exists():
+            quant = order_item[0].quantity
+            if (quant > 1):
+                #Decrease amount by one unit
+                order_item.update(quantity=quant - 1)
+        else:
+            messages.info(request, "No such item in your cart")
+
+    else:
+        messages.info(request, "No such item in your cart")
+
+    return redirect('shop:order-summary')
+
+@login_required
+def increase_quantity(request, slug):
+    '''
+    Increase slug-item from the cart by one unit.
+    :param request: POST request
+    :param slug: Unique slug of the itenm
+    :return: Rendered page
+    '''
+
+    #Get the Item and its Order
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        order_item = order.items.filter(item__slug=slug)
+        if order_item.exists():
+            quant = order_item[0].quantity
+            # Increase quanity by one unit
+            order_item.update(quantity=quant + 1)
+        else:
+            messages.info(request, "No such item in your cart")
+
+    else:
+        messages.info(request, "No such item in your cart")
+
+    return redirect('shop:order-summary')
