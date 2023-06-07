@@ -15,6 +15,9 @@ from .forms import CheckOutForm, ReviewForm
 from .models import *
 from .stripe_payment import stripe_payment
 import stripe
+
+from django.views.decorators.http import require_POST
+
 from django.db.models import Q
 # Create your views here.
 
@@ -107,3 +110,9 @@ def add_to_cart(request, slug):
     return redirect('shop:product', slug=slug)
 
 
+@require_POST
+def delete_from_cart(request, order_item_id):
+    order_item = OrderItem.objects.get(id=order_item_id)
+    order_item.delete()
+    messages.success(request, "Item has been removed from your cart.")
+    return redirect('shop:home')
