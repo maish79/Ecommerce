@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'shop.apps.ShopConfig',
-    'account.apps.AccountConfig'
+    'account.apps.AccountConfig',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'account.User'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+STRIPE_PUBLIC_KEY = 'pk_test_51NEqlHAF2T9QBFf9eoxhWjvQMdjFtL6BdEnVpVCEL2H3KSiFwrFxWYzWZ0R4IqwcvmzGKswKOT7bJUV8d2LKqJAs00nBY093UA'
+STRIPE_SECRET_KEY = 'sk_test_51NEqlHAF2T9QBFf9rNVjdsNFPMhARRabgTVBnS42wCKnBR2NHQmw8zpoe4dhvcuMgvvCFa3crcv2GQA7k670EhWo00dOZ4BJMV'

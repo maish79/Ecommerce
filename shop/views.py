@@ -24,4 +24,9 @@ def Home(request):
 
    
 
+def category(request, slug):
+    context = {
+        "category": get_object_or_404(Category, slug=slug),
+    }
 
+    return render(request, 'category.html', context)
