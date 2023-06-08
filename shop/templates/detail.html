@@ -154,6 +154,7 @@
               <a href="{% url 'account:login' %}"> Login and buy  </a>
             {% endif %}
                 </div>
+                <div class="d-flex pt-2">Uploaded By: {{user.get_username}}</div>
                 <div class="d-flex pt-2">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                     <div class="d-inline-flex">
