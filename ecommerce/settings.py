@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'crispy_forms',
     'crispy_bootstrap4',
+
+    'star_ratings',
 ]
 
 MIDDLEWARE = [
