@@ -1,0 +1,50 @@
+{% extends 'account/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+
+<div class="row">
+  <div class="col-xl-10">			
+              <div class="card card-default">
+                <div class="card-header justify-content-between mb-4">
+                  <h2>Listings</h2>
+                </div>
+                <div class="card-body py-0">
+                 
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                       <div class="row">
+                        <div class="col-6">
+                            {{form.title|as_crispy_field}}
+                        </div>
+                        <div class="col-6">
+                            {{form.slug|as_crispy_field}}
+                        </div>
+                        <div class="col-12">
+                            {{form.description | as_crispy_field}}
+                        </div>
+                        
+                        <div class="col-6">
+                            {{form.image|as_crispy_field}}
+                        </div>
+                        <div class="col-6">
+                            {{form.price|as_crispy_field}}
+                        </div> 
+                        {% if user.is_superuser %}
+                    <div class="col-6">
+                      
+                        {{form.uploader|as_crispy_field}}
+                      
+                    </div>
+                    {% endif %}
+                    </div>
+                </div>
+                    <button class="btn btn-primary btn-sm myfont">Submit</button>
+                
+                        </form>
+                  
+                  </div>
+            </div>
+  </div>
+
+{% endblock %}
