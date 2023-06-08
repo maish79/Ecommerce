@@ -72,6 +72,12 @@ class ProductCreate(LoginRequiredMixin, FieldsMixin, FormValidMixin, CreateView)
     template_name = 'account/product-create-update.html'
 
 
+class ProductUpdate(AuthorAccessMixin, FormValidMixin, FieldsMixin, UpdateView):
+    model = Item
+    template_name = 'account/product-create-update.html'
+
+
+    
 class Profile(UpdateView):
     model = User
     template_name = 'account/profile.html'
