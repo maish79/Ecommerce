@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <title>Delete Product</title>
+    </head>
+    <body>
+        <div class="modal in" style="display: block;">
+            <form method='POST'>
+                {% csrf_token %}
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h4 class="modal-title title-first btn btn-light myfont">Delete Product</h4>
+                </div>
+                <div class="modal-body myfont">
+                    <p class="title"> Are You sure to delete the " {{object}} " ????</p>
+                    <div class="row">
+                      <div class="col-12-xs text-center">
+                          <input class="btn btn-success btn-md myfont" type="submit" value="Yes">
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+          </div>
+    </body>
+</html>
+<style>
+.title{
+    margin-left: 60px;
+}
+.title-first{
+    margin-left: 180px;
+}
+</style>

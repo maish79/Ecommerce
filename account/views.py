@@ -77,7 +77,12 @@ class ProductUpdate(AuthorAccessMixin, FormValidMixin, FieldsMixin, UpdateView):
     template_name = 'account/product-create-update.html'
 
 
-    
+class ProductDelete(SuperUserAccessMixin, DeleteView):
+    model = Item
+    success_url = reverse_lazy('account:home')
+    template_name = 'account/product-delete.html'
+
+
 class Profile(UpdateView):
     model = User
     template_name = 'account/profile.html'
