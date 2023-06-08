@@ -7,7 +7,7 @@ from shop.models import *
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ProfileForm
-# from .mixins import FieldsMixin, FormValidMixin, AuthorAccessMixin, SuperUserAccessMixin
+from .mixins import FieldsMixin, FormValidMixin, AuthorAccessMixin, SuperUserAccessMixin
 
 
 def login(request):
@@ -66,6 +66,11 @@ class ProductList(LoginRequiredMixin, ListView):
         else:
             return Item.objects.filter(uploader=self.request.user)
         
+
+class ProductCreate(LoginRequiredMixin, FieldsMixin, FormValidMixin, CreateView):
+    model = Item
+    template_name = 'account/product-create-update.html'
+
 
 class Profile(UpdateView):
     model = User
