@@ -28,7 +28,7 @@ class AuthorAccessMixin():
 
 class SuperUserAccessMixin():
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user:
             return super().dispatch(request, *args, **kwargs)
         else:
             return Http404("You! can't see this page")
