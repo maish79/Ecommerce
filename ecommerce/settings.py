@@ -159,4 +159,4 @@ STAR_RATINGS_RERATE = True
 STAR_RATINGS_ANONYMOUS = True
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
